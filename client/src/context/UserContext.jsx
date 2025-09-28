@@ -2,14 +2,15 @@ import axios from 'axios'
 import React, { createContext, useEffect, useState } from 'react'
 export const userDataContext=createContext()
 function UserContext({children}) {
-    const serverUrl="http://localhost:5176"
+    const serverUrl = import.meta.env.VITE_SERVER_URL || ""
     const [userData,setUserData]=useState(null)
     const [frontendImage,setFrontendImage]=useState(null)
      const [backendImage,setBackendImage]=useState(null)
      const [selectedImage,setSelectedImage]=useState(null)
     const handleCurrentUser=async ()=>{
         try {
-            const result=await axios.get(`${serverUrl}/api/user/current`,{withCredentials:true})
+            const base = serverUrl ? serverUrl : ""
+            const result=await axios.get(`${base}/api/user/current`,{withCredentials:true})
             setUserData(result.data)
             console.log(result.data)
         } catch (error) {
@@ -21,7 +22,8 @@ function UserContext({children}) {
 try {
   console.log("Making API call to:", `${serverUrl}/api/user/asktoassistant`);
   console.log("Command being sent:", command);
-  const result=await axios.post(`${serverUrl}/api/user/asktoassistant`,{command},{withCredentials:true})
+  const base = serverUrl ? serverUrl : ""
+  const result=await axios.post(`${base}/api/user/asktoassistant`,{command},{withCredentials:true})
   console.log("API Response received:", result.data);
   return result.data
 } catch (error) {

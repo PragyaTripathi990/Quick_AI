@@ -57,6 +57,11 @@ app.get('/', async (req, res) => {
 })
 connectDB();
 
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
-})
+// Export app for Vercel serverless; only listen locally
+export default app;
+
+if (!process.env.VERCEL) {
+    app.listen(PORT, () => {
+        console.log(`Server is running on port ${PORT}`);
+    })
+}
